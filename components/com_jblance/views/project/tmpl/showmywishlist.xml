@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Project - My Wishlist">
+		<message>
+			<![CDATA[List of user wishlists posted by the user.]]>
+		</message>
+	</layout>
+	<state>
+		<name>My Wishlist</name>
+		<description>List of wishlists posted by the user.</description>
+	</state>
+</metadata>

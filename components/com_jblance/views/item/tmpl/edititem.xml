@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Item - Post New Item">
+		<message>
+			<![CDATA[Create new item.]]>
+		</message>
+	</layout>
+	<state>
+		<name>Post New Items</name>
+		<description>Create new item.</description>
+	</state>
+</metadata>
