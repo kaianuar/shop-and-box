@@ -686,6 +686,7 @@ class JblanceControllerProject extends JControllerLegacy {
 
 		if($isAccept == "accept"){
 			$post['isAccepted'] = 1;
+			$post['orderState'] = 1;			
 				$result = $row->save($post);
 				if($result){
 					$message = 'You have accepted the order';
@@ -745,6 +746,47 @@ class JblanceControllerProject extends JControllerLegacy {
 
 			// Call up the assignment engine
 		}
+
+
+
 		exit;
 	}		
+
+	function finaliseItem(){
+		$app  		= JFactory::getApplication();
+		$now 		= JFactory::getDate();
+		$row 		= JTable::getInstance('project', 'Table');
+
+		$project_id		= $app->input->get('project_id', 0, 'int');
+
+		$post 		= array();
+
+		$projHelper	= JblanceHelper::get('helper.project');		// create an instance of the class ProjectHelper
+		
+
+		$config = JblanceHelper::getConfig();
+		
+		$post['id'] 		= $project_id;
+		
+		if($project_id){
+				$post['orderState'] 		= 2;
+				$result = $row->save($post);
+				if($result){
+					$message = 'You have successfully finalised the order';
+					echo "<div>$message</div>";
+				}
+				else 
+					JError::raiseError(500, $row->getError());
+		}else{
+
+			// Call up the assignment engine
+		}
+
+
+
+		exit;
+	}		
+
+
+
 }
