@@ -712,6 +712,14 @@ class JblanceControllerProject extends JControllerLegacy {
 		$isConfirmed= $app->input->get('isConfirmed', 0, 'int');
 		$isRejected = $app->input->get('isRejected', 0, 'int');
 		$itemID		= $app->input->get('itemID', 0, 'int');
+
+		$orderState= $app->input->get('orderState', 0, 'int');
+
+		if($orderState == 3){
+			$isPurchased= $app->input->get('isPurchased', 0, 'int');
+			$isReceived = $app->input->get('isReceived', 0, 'int');				
+		}
+	
 		$post 		= array();
 		//$jbmail 	= JblanceHelper::get('helper.email');		// create an instance of the class EmailHelper
 		$projHelper	= JblanceHelper::get('helper.project');		// create an instance of the class ProjectHelper
@@ -727,12 +735,19 @@ class JblanceControllerProject extends JControllerLegacy {
 		//$jbproject = $projHelper->getProjectDetails($projectid);
 		
 		$post['id'] 		= $itemID;
-		$post['item_name']  = $itemName;
-		$post['item_url'] 	= $itemURL;
-		$post['category'] 	= $category;
-		$post['cost'] 		= $cost;
-		$post['isConfirmed']= $isConfirmed;
-		$post['isRejected'] = $isRejected;
+
+
+		if($orderState == 3){
+			$post['isPurchased'] = $isPurchased;
+			$post['isReceived']  =  $isReceived;				
+		}else{
+			$post['item_name']  = $itemName;
+			$post['item_url'] 	= $itemURL;
+			$post['category'] 	= $category;
+			$post['cost'] 		= $cost;
+			$post['isConfirmed']= $isConfirmed;
+			$post['isRejected'] = $isRejected;			
+		}		
 		
 		if($itemID){
 				$result = $row->save($post);
@@ -758,6 +773,7 @@ class JblanceControllerProject extends JControllerLegacy {
 		$row 		= JTable::getInstance('project', 'Table');
 
 		$project_id		= $app->input->get('project_id', 0, 'int');
+		$orderState= $app->input->get('orderState', 0, 'int');
 
 		$post 		= array();
 
@@ -767,9 +783,16 @@ class JblanceControllerProject extends JControllerLegacy {
 		$config = JblanceHelper::getConfig();
 		
 		$post['id'] 		= $project_id;
+
+		if($orderState == 1){
+
+			$post['orderState'] 		= 2;
+		}elseif($orderState == 3){
+
+			$post['orderState'] 		= 4;
+		}
 		
 		if($project_id){
-				$post['orderState'] 		= 2;
 				$result = $row->save($post);
 				if($result){
 					$message = 'You have successfully finalised the order';

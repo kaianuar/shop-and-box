@@ -581,6 +581,7 @@ class JblanceControllerMembership extends JControllerLegacy {
 		$post['id'] = $escrow->project_id;
 		if($escrow->project_id){
 			$post['orderState'] = 3;
+			$post['paid_amt'] = $escrow->amount;
 			$result = $project->save($post);
 		}		
 

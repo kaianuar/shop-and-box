@@ -105,22 +105,35 @@
 	}
 ?>
 
-	window.addEvent('domready', function(){
-		$('editItemForm').addEvent('submit', function(e){
-		e.stop();
-		var req = new Request.HTML({
-			url: 'index.php?option=com_jblance&task=project.edititem',
-			data: $('editItemForm'),
-			
-			onSuccess: function(tree, response){
+	<?php
+		foreach($this->items as $item){ 
+	?>
+		window.addEvent('domready', function(){ 
+
+	        $('editItemForm<?=$item->id;?>').addEvent('submit', function(e){ 
+			e.stop();
+			var req = new Request.HTML({
+				url: 'index.php?option=com_jblance&task=project.edititem',
+				data: $('editItemForm<?=$item->id;?>'),
 				
-				var p = new Element('p', {'text': 'You have successfully confirmed the order'});
-				p.inject($('successMessage'));
-	
-			}
-		}).send();
+				onSuccess: function(tree, response){
+					
+					var p = new Element('p', {'text': 'You have successfully confirmed the order'});
+					p.inject($('successMessage'));
+		
+				}
+			}).send();
+			});
+				
 		});
-	});	
+	<?php
+		} 
+	?>
+	
+
+	<?php
+		if(($finalised == 1 && $row->orderState == 1) || $row->orderState == 3){
+		?>		
 
 	window.addEvent('domready', function(){
 		$('finaliseForm').addEvent('submit', function(e){
@@ -138,6 +151,10 @@
 		}).send();
 		});
 	});
+
+	<?php
+		}
+	?>
 
 </script>
 <!-- <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="userForm"> -->
@@ -272,32 +289,57 @@
 				<?php
 				$finalised = 0;
 
+
 				foreach($this->items as $item){ 
 					$disabled = "";
+					$received = "";
+					$purchased = "";
+
 					if($item->isConfirmed == 1 || $item->isRejected == 1){
 						$disabled = "disabled";
 					}
+
+					if($item->isPurchased == 1){
+						$purchased = "disabled";
+					}
+
+					if($item->isReceived == 1){
+						$received = "disabled";
+					}					
 				?>
 				
 					<div class="span8">
-						<form id="editItemForm" method="post" action="<?php echo JRoute::_('index.php'); ?>" class="form-inline">					
+						<form id="editItemForm<?=$item->id;?>" method="post" action="<?php echo JRoute::_('index.php'); ?>" class="form-inline">					
 
-							<input type="text" name="itemName" id="itemName" value="<?=$item->item_name;?>" <?=$disabled;?> />
+							<label for="itemName">Item Name</label><input type="text" name="itemName" id="itemName" value="<?=$item->item_name;?>" <?=$disabled;?> />
 
-							<input type="text" name="itemURL" id="itemURL" value="<?=$item->item_url;?>" <?=$disabled;?> />
+							<label for="itemURL">Item URL</label><input type="text" name="itemURL" id="itemURL" value="<?=$item->item_url;?>" <?=$disabled;?> />
 
-							<input type="text" name="category" id="category" value="<?=$item->category;?>" <?=$disabled;?> />
+							<label for="category">Category</label><input type="text" name="category" id="category" value="<?=$item->category;?>" <?=$disabled;?> />
 
-							<input type="text" name="cost" id="cost" value="<?=$item->cost;?>" <?=$disabled;?> />
+							<label for="cost">Cost</label><input type="text" name="cost" id="cost" value="<?=$item->cost;?>" <?=$disabled;?> />
 
-							<input type="text" name="isConfirmed" id="isConfirmed" value="<?=$item->isConfirmed;?>" <?=$disabled;?> />
+							<label for="isConfirmed">Confirmed</label><input type="text" name="isConfirmed" id="isConfirmed" value="<?=$item->isConfirmed;?>" <?=$disabled;?> />
 
-							<input type="text" name="isRejected" id="isRejected" value="<?=$item->isRejected;?>" <?=$disabled;?> />
+							<label for="isRejected">Rejected</label><input type="text" name="isRejected" id="isRejected" value="<?=$item->isRejected;?>" <?=$disabled;?> />
+							<input type="hidden" name="itemID" id="itemID" value="<?=$item->id;?>" />	
+							<input type="hidden" name="orderState" id="orderState" value="<?=$row->orderState;?>" />						
 							<?php
-							if($item->isConfirmed == 0 && $item->isRejected == 0){
+							if($row->orderState == 3){
+							?>
+							<label for="isPurchased">Purchased</label><input type="text" name="isPurchased" id="isPurchased" value="<?=$item->isPurchased;?>" <?=$purchased;?>  />
+
+							<label for="isReceived">Received</label><input type="text" name="isReceived" id="isReisReceivedjected" value="<?=$item->isReceived;?>" <?=$received;?> />
+
+
+							<?php
+							}
+							?>							
+							<?php
+							if(($item->isConfirmed == 0 && $item->isRejected == 0) || ($row->orderState == 3 && ($item->isPurchased != 1 || $item->isReceived != 1))){
 							?>
 								<input type="submit" value="Confirmed" id="btnConfirmed" class="btn btn-primary" />
-								<input type="hidden" name="itemID" id="itemID" value="<?=$item->id;?>" />
+
 							<?php
 							}
 							?>
@@ -320,13 +362,14 @@
 				} ?>
 					
 				<?php
-					if($finalised == 1){
+					if(($finalised == 1 && $row->orderState == 1) || $row->orderState == 3){
 					?>
 					<div id="finalised">
 						<form id="finaliseForm" method="post" action="<?php echo JRoute::_('index.php'); ?>" class="form-inline">
 
 							<input type="submit" value="Finalise Order" id="btnFinalise" class="btn btn-primary" />
 							<input type="hidden" name="project_id" value="<?php echo $row->id; ?>" />
+							<input type="hidden" name="orderState" id="orderState" value="<?=$row->orderState;?>" />
 						</form>	
 					</div>
 					<?php
