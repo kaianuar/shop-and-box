@@ -315,7 +315,7 @@
 
 							<label for="itemURL">Item URL</label><input type="text" name="itemURL" id="itemURL" value="<?=$item->item_url;?>" <?=$disabled;?> />
 
-							<label for="category">Category</label><input type="text" name="category" id="category" value="<?=$item->category;?>" <?=$disabled;?> />
+							<label for="id_category">Category</label><input type="text" name="id_category" id="id_category" value="<?=$item->id_category;?>" <?=$disabled;?> />
 
 							<label for="cost">Cost</label><input type="text" name="cost" id="cost" value="<?=$item->cost;?>" <?=$disabled;?> />
 

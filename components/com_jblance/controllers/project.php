@@ -707,7 +707,7 @@ class JblanceControllerProject extends JControllerLegacy {
 		$row 		= JTable::getInstance('item', 'Table');
 		$itemName 	= $app->input->get('itemName', '', 'string');
 		$itemURL 	= $app->input->get('itemURL', '', 'string');
-		$category 	= $app->input->get('category', '', 'string');
+		$category 	= $app->input->get('id_category', '', 'string');
 		$cost 		= $app->input->get('cost', '', 'string');
 		$isConfirmed= $app->input->get('isConfirmed', 0, 'int');
 		$isRejected = $app->input->get('isRejected', 0, 'int');
@@ -743,7 +743,7 @@ class JblanceControllerProject extends JControllerLegacy {
 		}else{
 			$post['item_name']  = $itemName;
 			$post['item_url'] 	= $itemURL;
-			$post['category'] 	= $category;
+			$post['id_category'] 	= $category;
 			$post['cost'] 		= $cost;
 			$post['isConfirmed']= $isConfirmed;
 			$post['isRejected'] = $isRejected;			

@@ -34,7 +34,7 @@ class JblanceControllerUser extends JControllerLegacy {
 		$post   = JRequest::get('POST');
 		$jbuser	= JTable::getInstance('jbuser', 'Table');
 		//$jbuser->load($id);
-		print_r($post); exit;
+		//print_r($post['trans']); exit;
 		
 		$id_category 	= $app->input->get('id_category', '', 'array');
 		if(count($id_category) > 0 && !(count($id_category) == 1 && empty($id_category[0]))){
@@ -51,7 +51,24 @@ class JblanceControllerUser extends JControllerLegacy {
 		
 		//update the name
 		$query = "UPDATE #__users SET name=".$db->quote($post['name'])." WHERE id=".$user->id;
+		$query2 = "UPDATE #__jblance_user SET availibility=".$post['availability']." WHERE user_id=".$user->id;		
 		$db->setQuery($query);
+		$db->setQuery($query2);
+
+		if($post['trans']){
+			$trans = implode(',', $post['trans']);
+			$query3 = "UPDATE #__jblance_user SET trans='".$trans."' WHERE user_id=".$user->id;
+			//echo $query3; exit;
+			$db->setQuery($query3);
+			$db->execute();
+
+			
+			//print_r($trans); exit;
+		} else {
+			echo "empty"; exit;
+		}
+
+				
 		if(!$db->execute()){
 			JError::raiseError($db->getErrorNum(), $db->getErrorMsg());
 		}

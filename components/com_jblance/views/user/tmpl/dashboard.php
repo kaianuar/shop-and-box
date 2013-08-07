@@ -86,9 +86,9 @@ if(!JBLANCE_FREE_MODE){
 				<?php echo JText::_('COM_JBLANCE_PROJECTS'); ?>
 			</li>
 			<?php if($this->dbElements['allowPostProjects']) : ?>
-			<li>
+			<!-- <li>
 				<a href="<?php echo $link_post_project; ?>"><i class="icon-plus"></i> <?php echo JText::_('COM_JBLANCE_POST_NEW_PROJECT'); ?> </a>
-			</li>
+			</li> -->
 			<li>
 				<a href="<?php echo $link_my_project; ?>"><i class="icon-th-list"></i> <?php echo JText::_('COM_JBLANCE_MY_PROJECTS'); ?> </a>
 			</li>

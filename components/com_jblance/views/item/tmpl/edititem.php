@@ -57,6 +57,16 @@
 				<input type="text" class="input-xlarge required" name="item_name" id="item_name" value="<?php echo $this->row->project_title;?>" />
 			</div>
 		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="id_category"><?php echo JText::_('Categories'); ?> <span class="redfont">*</span>:</label>
+			<div class="controls">
+				<?php 
+				$attribs = 'class="input-xlarge required" size="20" multiple ';
+				$categtree = $select->getSelectCategoryTree('id_category[]', explode(',', $this->userInfo->id_category), 'COM_JBLANCE_PLEASE_SELECT', $attribs, '', true);
+				echo $categtree; ?>
+			</div>
+		</div> 		
 		<!-- <div class="control-group">
 			<label class="control-label" for="id_category"><?php echo JText::_('Item Categories'); ?> <span class="redfont">*</span>:</label>
 			<div class="controls">
