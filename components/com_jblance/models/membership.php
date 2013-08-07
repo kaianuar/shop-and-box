@@ -228,10 +228,14 @@
 	function getEscrow(){
 		$db = JFactory::getDBO();
 		$user	= JFactory::getUser();
+
+		//$project_id = $app->input->get('id', '', 'string');
+		$project_id = 20;
 		
-		$query = "SELECT id AS value, project_title AS text FROM #__jblance_project ".
-				 "WHERE publisher_userid=$user->id AND status=".$db->quote('COM_JBLANCE_CLOSED')." AND paid_status<>".$db->quote('COM_JBLANCE_PYMT_COMPLETE');
+		$query = "SELECT id AS value, project_title AS text, assigned_userid As boxer_id FROM #__jblance_project ".
+				 "WHERE publisher_userid=$user->id AND orderState=2 AND paid_status IS NULL AND id = $project_id";
 		$db->setQuery($query);
+
 		$projects = $db->loadObjectList();
 		
 		if(empty($projects)){

@@ -49,19 +49,30 @@ class JblanceControllerMembership extends JControllerLegacy {
 		$db 	  	= JFactory::getDBO();
 		$projectId 	= $app->input->get('project_id', 0, 'int');
 		$response 	= array();
+
+
+		$query = 'SELECT * FROM #__jblance_item p WHERE p.order_id='.$db->quote($projectId).' '.
+				 'AND isConfirmed = 1';
+ 		$db->setQuery($query);
+ 		$db->execute();
+ 		$items = $db->loadObjectList();
+
+ 		$itemTotal = 0;
+		foreach ($items as $item) {
+			$itemTotal += (int) $item->cost;
+		}	
 		
-		$query = "SELECT p.*,b.amount bidamount FROM #__jblance_project p ".
-				 "INNER JOIN #__jblance_bid b ON p.id=b.project_id ".
-				 "WHERE p.id=".$db->quote($projectId)." AND b.status='COM_JBLANCE_ACCEPTED'";
+		$query = "SELECT p.* FROM #__jblance_project p ".
+				 "WHERE p.id=".$db->quote($projectId);
 		$db->setQuery($query);
 		$row = $db->loadObject();
 		
 		if($row){
 			$bidderUsername = JFactory::getUser($row->assigned_userid)->username;
-			$proj_balance = $row->bidamount - $row->paid_amt;
+			$proj_balance = $itemTotal;
 			$response['result'] = 'OK';
 			$response['assignedto'] = $bidderUsername;
-			$response['bidamount'] = $row->bidamount;
+			//$response['bidamount'] = $row->bidamount;
 			$response['proj_balance_html'] = JText::_('COM_JBLANCE_PROJECT_BALANCE_IS').' '.JblanceHelper::formatCurrency($proj_balance);
 			$response['proj_balance'] = $proj_balance;
 		}
@@ -563,6 +574,16 @@ class JblanceControllerMembership extends JControllerLegacy {
 		$now = JFactory::getDate();
 		$escrow->date_release = $now->toSql();
 		$escrow->status = 'COM_JBLANCE_RELEASED';
+
+		$project = JTable::getInstance('project', 'Table');
+		$post 		= array();
+
+		$post['id'] = $escrow->project_id;
+		if($escrow->project_id){
+			$post['orderState'] = 3;
+			$result = $project->save($post);
+		}		
+
 		
 		if(!$escrow->check())
 			JError::raiseError(500, $escrow->getError());

@@ -128,6 +128,24 @@
  		$return[1] = $pageNav;
  		return $return;
  	}
+
+ 	function getItemTotals(){
+ 		$app  = JFactory::getApplication();
+ 		$db	  = JFactory::getDBO();
+ 		$user = JFactory::getUser();
+ 		
+ 		$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
+ 		$limitstart	= $app->input->get('limitstart', 0, 'int');
+ 		
+ 		$query = 'SELECT * FROM #__jblance_item p WHERE p.user_id='.$user->id.' ';
+ 		$db->setQuery($query);
+ 		$db->execute();
+ 		$items = $db->loadObjectList();
+ 		
+ 		$return[0] = $items;
+
+ 		return $return;
+ 	} 	
  	
  	function getListProject(){
  		$app  = JFactory::getApplication();

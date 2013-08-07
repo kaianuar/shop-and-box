@@ -61,7 +61,7 @@
 </script>
 <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="userFormProject" id="userFormProject" class="form-validate form-horizontal" onsubmit="return validateForm(this);">
 	<div class="jbl_h3title"><?php echo JText::_('COM_JBLANCE_ESCROW_PAYMENT'); ?></div>
-	<div class="row">
+<!-- 	<div class="row">
 		<div class="span6">
 			<strong><?php echo JText::_('COM_JBLANCE_PLEASE_SELECT_ONE_OF_THE_FOLLOWING'); ?>:</strong>
 			<p>
@@ -76,7 +76,7 @@
 				</label>
 			</p>
 		</div>
-	</div>
+	</div> -->
 	<div class="lineseparator"></div>
 	
 	<div class="control-group" id="projectBox">

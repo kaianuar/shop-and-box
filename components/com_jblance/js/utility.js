@@ -187,12 +187,12 @@ function fillProjectInfo(){
 	          	  $('recipient').set('value', resp['assignedto']);
 	          	  $('proj_balance_div').set('html', resp['proj_balance_html']);
 	          	  //if full payment is checked, set amount to bid amount. if payment is partial, set amount to balance amount
-	          	  if($('full_payment_option').checked){
-	          		  $('amount').set('value', resp['bidamount']);
-	          	  }
-	          	  else if($('partial_payment_option').checked){
-	          		$('amount').set('value', resp['proj_balance']);
-	          	  }
+	          	  // if($('full_payment_option').checked){
+	          	  $('amount').set('value', resp['proj_balance']);
+	          	 //  }
+	          	 //  else if($('partial_payment_option').checked){
+	          		// $('amount').set('value', resp['proj_balance']);
+	          	 //  }
 	          	$('proj_balance').set('value', resp['proj_balance']);
 	          }
 	          else if(resp['result'] == 'NO'){

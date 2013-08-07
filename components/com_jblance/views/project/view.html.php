@@ -54,8 +54,12 @@ class JblanceViewProject extends JViewLegacy {
 			$return = $model->getShowMyProject();
 			$rows = $return[0];
 			$pageNav = $return[1];
+
+			$items = $model->getItemTotals();
+			//print_r($items);
 			$this->assignRef('rows', $rows);
 			$this->assignRef('pageNav', $pageNav);
+			$this->assignRef('items', $items);
 		}
 		elseif($layout == 'showmywishlist'){
 			$return = $model->getShowMyWishlist();

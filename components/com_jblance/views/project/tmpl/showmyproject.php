@@ -61,7 +61,7 @@
 			$link_proj_detail = JRoute::_('index.php?option=com_jblance&view=project&layout=detailproject&id='.$row->id);
 			$link_edit 		  = JRoute::_('index.php?option=com_jblance&view=project&layout=editproject&id='.$row->id);	
 			$link_pick_user	  = JRoute::_('index.php?option=com_jblance&view=project&layout=pickuser&id='.$row->id);
-			$link_transfer	  = JRoute::_('index.php?option=com_jblance&view=membership&layout=escrow');
+			$link_transfer	  = JRoute::_('index.php?option=com_jblance&view=membership&layout=escrow&id='.$row->id);
 			$link_del  		  = JRoute::_('index.php?option=com_jblance&task=project.removeproject&id='.$row->id.'&'.JSession::getFormToken().'=1');
 			$link_reopen_proj = JRoute::_('index.php?option=com_jblance&task=project.reopenproject&id='.$row->id.'&'.JSession::getFormToken().'=1');
 			$bidsCount 		  = $model->countBids($row->id);
@@ -159,10 +159,23 @@
 				<?php if($enableEscrowPayment) { ?>
 				<td class="text-center" data-title="<?php echo JText::_('COM_JBLANCE_PAYMENT_STATUS'); ?>">
 					<?php 
-					if($row->status == 'COM_JBLANCE_CLOSED'){ 
-						$perc = ($row->paid_amt/$bidInfo->bidamount)*100;
-						echo round($perc, 2).'%';
-						if($perc < 100){
+					$itemTotal = 0;
+					$currentItem = 0;
+					$noItems=count($this->items);
+					for ($z=0;  $z < $noItems; $z++) {
+						$items = $this->items[$z];
+						foreach ($items as $item) {
+							if($row->id == $item->order_id){
+								$itemTotal += (int) $item->cost;
+								$currentItem = 1;								
+							}
+
+						}
+
+					}
+					if($row->orderState == 2 && $currentItem == 1){ 
+						echo round($itemTotal, 2);
+						if($itemTotal > 0){
 					?>
 					<a href="<?php echo $link_transfer; ?>"><?php echo JText::_('COM_JBLANCE_PAY_NOW'); ?></a>
 					<?php
