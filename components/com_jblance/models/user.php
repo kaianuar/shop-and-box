@@ -40,8 +40,9 @@
  		$return[0] = $dbElements;
  		$return[1] = $userInfo;
  		$return[2] = $feeds;
- 		$return[3] = $currentOrders;
- 		$return[4] = $pendings;
+ 		$return[3] = $pendings;
+ 		$return[4] = $currentOrders;
+
  		//$return[4] = $currentOrders;
  	
  		return $return;
@@ -59,7 +60,7 @@
 
  		$result = $currentOrders;
 
- 		print_r($result);
+ 		//print_r($result);
 
  		return $result;
  	}

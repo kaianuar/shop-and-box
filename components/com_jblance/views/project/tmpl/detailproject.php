@@ -79,6 +79,40 @@
 		}).send();
 		});
 	});
+
+	window.addEvent('domready', function(){
+		$('acceptanceForm').addEvent('submit', function(e){
+		e.stop();
+		var req = new Request.HTML({
+			url: 'index.php?option=com_jblance&task=project.submitacceptance',
+			data: $('acceptanceForm'),
+			
+			onSuccess: function(tree, response){
+				
+				var p = new Element('p', {'text': 'You have successfully accepted the order'});
+				p.inject($('successMessage'));
+	
+			}
+		}).send();
+		});
+	});	
+
+	window.addEvent('domready', function(){
+		$('editItemForm').addEvent('submit', function(e){
+		e.stop();
+		var req = new Request.HTML({
+			url: 'index.php?option=com_jblance&task=project.edititem',
+			data: $('editItemForm'),
+			
+			onSuccess: function(tree, response){
+				
+				var p = new Element('p', {'text': 'You have successfully confirmed the order'});
+				p.inject($('successMessage'));
+	
+			}
+		}).send();
+		});
+	});		
 </script>
 <!-- <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="userForm"> -->
 	<div class="pull-right">
@@ -131,7 +165,7 @@
 	</div>
 	<div class="clearfix"></div><br>
 				
-	<div class="well well-small">
+	<!--div class="well well-small">
 		<ul class="promotions big" style="float: left; margin: -16px 0 0 -16px;">
 			<?php if($row->is_featured) : ?>
 			<li data-promotion="featured"><?php echo JText::_('COM_JBLANCE_FEATURED'); ?></li>
@@ -203,15 +237,45 @@
         		</div>
 			</div>
 		</div>
-	</div>
+	</div-->
 	
 	<div class="row-fluid">
 		<div class="span8">
 			<h4><?php echo JText::_('COM_JBLANCE_PROJECT_DESCRIPTION'); ?>:</h4>
-			<div style="text-align: justify;"><?php echo $row->description; ?></div>
+			<div style="text-align: justify;">
+				<?php
+				foreach($this->items as $item){ 
+				?>
+				
+					<div class="span8">
+						<form id="editItemForm" method="post" action="<?php echo JRoute::_('index.php'); ?>" class="form-inline">					
+
+							<input type="text" name="itemName" id="itemName" value="<?=$item->item_name;?>" />
+
+							<input type="text" name="itemURL" id="itemURL" value="<?=$item->item_url;?>" />
+
+							<input type="text" name="category" id="category" value="<?=$item->category;?>" />
+
+							<input type="text" name="cost" id="cost" value="<?=$item->cost;?>" />
+
+							<input type="text" name="isConfirmed" id="isConfirmed" value="<?=$item->isConfirmed;?>" />
+
+							<input type="text" name="isRejected" id="isRejected" value="<?=$item->isRejected;?>" />
+							<input type="submit" value="Confirmed" id="btnConfirmed" class="btn btn-primary" />
+							<input type="hidden" name="itemID" id="itemID" value="<?=$item->id;?>" />
+							
+						</form>	
+					</div>
+
+		        
+				
+				<?php
+				} ?>
+
+			</div>
 			
-			<h4><?php echo JText::_('COM_JBLANCE_SKILLS_REQUIRED'); ?>:</h4>
-			<div><?php echo JblanceHelper::getCategoryNames($row->id_category); ?></div>
+			<!-- <h4><?php echo JText::_('COM_JBLANCE_SKILLS_REQUIRED'); ?>:</h4>
+			<div><?php echo JblanceHelper::getCategoryNames($row->id_category); ?></div> -->
 			
 			<?php
 			if(count($this->projfiles) > 0) : ?>
@@ -332,60 +396,21 @@
 			</div>
 		</div>
 	</div>
-	<div class="lineseparator"></div>
-	
 	<div class="row-fluid">
 		<div class="span12">
-			<div class="jbl_h3title"><?php echo JText::_('COM_JBLANCE_ALL_BIDS'); ?></div>
-			<!-- if the project is sealed and the user is not the publisher, then hide the bid details of the project -->
-			<?php 
-			//check if the user has bid
-			$hasBid = $projHelper->hasBid($row->id, $user->id);
-			?>
-			<?php if($row->is_sealed && ($user->id != $row->publisher_userid) && !$hasBid) : ?>
-				<div class="jbbox-info"><?php echo JText::_('COM_JBLANCE_SEALED_PROJECT_PULBISHER_AND_BIDDERS_SEE_DETAILS'); ?></div>
-			<?php else : ?>
-				<?php
-				if(!count($this->bids))
-					echo JText::_('COM_JBLANCE_THERE_ARE_NO_BIDS_YET');
-				else {
-					for($i=0, $n=count($this->bids); $i < $n; $i++){
-						$bid = $this->bids[$i];
-					?>
-					<div class="row-fluid">
-						<div class="span1">
-						<?php
-						$attrib = 'width=56 height=56 class="img-polaroid"';
-						$avatar = JblanceHelper::getThumbnail($bid->user_id, $attrib);
-						echo !empty($avatar) ? LinkHelper::GetProfileLink($bid->user_id, $avatar) : '&nbsp;'; ?>
-						</div>
-						<div class="span6">
-							<h5 class="media-heading">
-								<?php echo LinkHelper::GetProfileLink(intval($bid->user_id), $this->escape($bid->$nameOrUsername)); ?>
-							</h5>
-							<p><?php echo ($bid->details) ? $bid->details : JText::_('COM_JBLANCE_DETAILS_NOT_PROVIDED'); ?></p>
-						</div>
-						<div class="span3">
-							<?php $rate = JblanceHelper::getAvarageRate($bid->user_id, true); ?>
-						</div>
-						<div class="span2">
-							<div>
-		                        <span class="font20"><?php echo JblanceHelper::formatCurrency($bid->amount, true, false, 0); ?></span><br>
-		                        <span><?php echo $bid->delivery; ?> <?php echo JText::_('COM_JBLANCE_BID_DAYS'); ?></span><br>
-		                        <?php if($bid->status == 'COM_JBLANCE_ACCEPTED') : ?>
-		                        <span class="label label-success"><?php echo JText::_($bid->status); ?></span>
-		                        <?php elseif($bid->status == 'COM_JBLANCE_DENIED') : ?>
-		                        <span class="label label-important"><?php echo JText::_($bid->status); ?></span>
-		                        <?php endif; ?>
-		            		</div>
-						</div>
-					</div>
-					<div class="lineseparator"></div>
-					<?php 
-					}
-				}
-				?>
-			<?php endif; ?>
+
+		    <form id="acceptanceForm" method="post" action="<?php echo JRoute::_('index.php'); ?>" class="form-inline">
+				<input type="submit" value="<?php echo JText::_('COM_JBLANCE_POST_ACCEPT'); ?>" id="btnAcceptAssignment" class="btn btn-primary" />
+		        <input type="hidden" name="project_id" value="<?php echo $row->id; ?>" />
+		        <input type="hidden" name="action" value="accept" />		        
+			</form>
+		    <form id="acceptanceForm" method="post" action="<?php echo JRoute::_('index.php'); ?>" class="form-inline">
+				<input type="submit" value="<?php echo JText::_('COM_JBLANCE_POST_REJECT'); ?>" id="btnRejectAssignment" class="btn btn-primary" />
+		        <input type="hidden" name="project_id" value="<?php echo $row->id; ?>" />
+		        <input type="hidden" name="action" value="reject" />
+			</form>	
+			<div id="successMessage">
+			</div>		
 		</div>
 	</div>
 <!-- </form> -->

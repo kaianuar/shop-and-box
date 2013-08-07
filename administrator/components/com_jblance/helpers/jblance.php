@@ -562,23 +562,23 @@ class JblanceHelper {
 	}
 	
 	public static function getMultiSelect($element, $title){
-		$doc = JFactory::getDocument();
- 		$doc->addScript(JURI::root()."components/com_jblance/js/multipleSelectFilter.js");
- 		$doc->addStyleSheet(JURI::root()."components/com_jblance/css/multipleSelect.css");
+		// $doc = JFactory::getDocument();
+ 	// 	$doc->addScript(JURI::root()."components/com_jblance/js/multipleSelectFilter.js");
+ 	// 	$doc->addStyleSheet(JURI::root()."components/com_jblance/css/multipleSelect.css");
  		
- 		$js = "
- 				window.addEvent('domready', function() {
-					if($('$element')){
-						var mySelect = new multipleSelectFilter('$element', {
-							'initLength':'200',
-							'initialTxt':'$title',
-							//'minChars': '1',
-							'charWidth':'8'
-						});
-					}
-				});
- 		";
- 		$doc->addScriptDeclaration($js);
+ 	// 	$js = "
+ 	// 			window.addEvent('domready', function() {
+		// 			if($('$element')){
+		// 				var mySelect = new multipleSelectFilter('$element', {
+		// 					'initLength':'200',
+		// 					'initialTxt':'$title',
+		// 					//'minChars': '1',
+		// 					'charWidth':'8'
+		// 				});
+		// 			}
+		// 		});
+ 	// 	";
+ 	// 	$doc->addScriptDeclaration($js);
 	}
 	
 	public static function getTableClassName(){

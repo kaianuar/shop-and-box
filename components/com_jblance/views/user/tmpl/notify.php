@@ -22,6 +22,7 @@
 <?php include_once(JPATH_COMPONENT.'/views/profilemenu.php'); ?>
 <div class="jbl_h3title"><?php echo JText::_('COM_JBLANCE_EMAIL_SETTINGS'); ?></div>
 <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="userFormNotify" class="form-validate form-horizontal" enctype="multipart/form-data">
+	<?php echo JRoute::_('index.php'); ?>
 	<p><?php echo JText::_('COM_JBLANCE_RECEIVE_INDIVIDUAL_NOTIFICATIONS_WHEN'); ?>,</p>
 	<div class="control-group"  style="display: none;">
 		<label class="control-label"><?php echo JText::_('COM_JBLANCE_FREQUENCY_OF_UPDATES'); ?>:</label>

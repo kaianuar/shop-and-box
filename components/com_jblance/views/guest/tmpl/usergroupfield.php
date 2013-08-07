@@ -90,7 +90,7 @@ if($step)
 		<?php endif; ?>
 		<!-- Skills and hourly rate should be visible only to users who can work/bid -->
 		<?php if($userInfo->allowBidProjects) : ?>
-		<div class="control-group">
+		<!-- <div class="control-group">
 			<label class="control-label" for="rate"><?php echo JText::_('COM_JBLANCE_HOURLY_RATE'); ?> <span class="redfont">*</span>:</label>
 			<div class="controls">
 				<div class="input-prepend input-append">
@@ -99,17 +99,23 @@ if($step)
 					<span class="add-on"><?php echo $currencycod.' / '.JText::_('COM_JBLANCE_HOUR'); ?></span>
 				</div>
 			</div>
-		</div>
+		</div> -->
+		 
+		<?php endif; ?>
 		<div class="control-group">
-			<label class="control-label" for="id_category"><?php echo JText::_('COM_JBLANCE_SKILLS'); ?> <span class="redfont">*</span>:</label>
+			<label class="control-label" for="id_category"><?php echo JText::_('Item Categories'); ?> <span class="redfont">*</span>:</label>
 			<div class="controls">
 				<?php 
-				$attribs = 'class="inputbox required" size="20" multiple ';
-				$categtree = $select->getSelectCategoryTree('id_category[]', 0, 'COM_JBLANCE_PLEASE_SELECT', $attribs, '', true);
-				echo $categtree; ?>
+				$attribs = 'class="input-xlarge required"';
+				$default = $this->row->id_category;
+				echo $select->getSelectCategoryTree('id_categorys[]', $default, 'COM_JBLANCE_PLEASE_SELECT', $attribs, '',true);
+				?>
 			</div>
+
 		</div>
-		<?php endif; ?>
+
+
+
 	</fieldset>
 	
 	<!-- Show the following profile fields only for JoomBri Profile -->
@@ -159,6 +165,38 @@ if($step)
 		}
 	}	//end of $joombriProfile 'if'
 	?>
+
+	<div class="control-group">
+			<label class="control-label" for="country"><?php echo JText::_('Country'); ?> :</label>
+			<div class="controls">
+				<input class="inputbox " type="text" name="country" id="country" value="" />
+			</div>
+	</div>
+
+	<!-- <div class="control-group">
+			<label class="control-label" for="country"><?php echo JText::_('Transaction Type'); ?> :</label>
+				<div class="controls">
+					<?php 
+					$default = 'Available';
+					$options = array('Available','Not Available');
+					$dropdown = JHTML::_('select.genericlist', $options, 'trans', 'class="inputbox"', 'value', 'text', $default);
+					echo $dropdown;
+					?>
+				</div>
+		</div>
+
+	<div class="control-group">
+			<label class="control-label" for="country"><?php echo JText::_('Transaction Type'); ?> :</label>
+				<div class="controls">
+					<?php 
+					$default = 'Available';
+					$options = array('Available','Not Available');
+					$dropdown = JHTML::_('select.genericlist', $options, 'trans', 'class="inputbox"', 'value', 'text', $default);
+					echo $dropdown;
+					?>
+				</div>
+	</div>	 -->
+
 	<div class="form-actions">
 		<input type="submit" value="<?php echo JText::_('COM_JBLANCE_SAVE'); ?>" class="btn btn-primary" />
 	</div>

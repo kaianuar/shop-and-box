@@ -103,6 +103,11 @@ class SelectHelper {
 		$yesno = JHTML::_('select.booleanlist', $name, 'class="inputbox"', $value);
 		return $yesno;
 	}
+
+	function AddToOrder($name, $value = 1){
+		$addorder = JHTML::_('select.booleanlist', $name, 'class="inputbox"', $value);
+		return $addorder;
+	}
 	
 	//20.getSelectUserGroups
 	function getSelectUserGroups($var, $default, $title, $attribs, $event){

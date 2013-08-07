@@ -254,6 +254,9 @@ function JblanceParseRoute($segments){
 		case 'showmywishlist':
 			$vars['view'] = 'project';
 			break;
+		case 'wishlist':
+			$vars['view'] = 'item';
+			break;
 			
 		//user
 		case 'dashboard':

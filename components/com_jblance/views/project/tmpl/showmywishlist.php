@@ -18,7 +18,7 @@
  $doc = JFactory::getDocument();
  $doc->addScript("components/com_jblance/js/mooboomodal.js");
  $doc->addScript("components/com_jblance/js/jbmodal.js");
-
+ $select = JblanceHelper::get('helper.select');
  $model				  = $this->getModel();
  $config 			  = JblanceHelper::getConfig();
 
@@ -29,6 +29,7 @@
  JText::script('COM_JBLANCE_YES');
 ?>
 <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="userForm">
+	<?php echo JRoute::_('index.php'); ?>
 	<div class="jbl_h3title"><?php echo JText::_('COM_JBLANCE_MY_WISHLISTS'); ?></div>
 	<div id="no-more-tables">
 	<table class="table table-bordered table-hover table-striped">
@@ -55,12 +56,13 @@
 		$k = 0;
 		$n=count($this->rows);
 		for ($i=0;  $i < $n; $i++) {
-			
-			$row = $this->rows[$i];
+
+		$row = $this->rows[$i];
+
 		$link_makeorder = JRoute::_('index.php?option=com_jblance&task=project.convertwishlist&id='.$row->id.'&'.JSession::getFormToken().'=1');
 		$link_del = JRoute::_('index.php?option=com_jblance&task=project.removeproject&id='.$row->id.'&'.JSession::getFormToken().'=1');
 
-		} 
+		
 		?>
 			<tr>
 				<td data-title="<?php echo JText::_('#'); ?>">1</td>
@@ -71,19 +73,39 @@
 				<td data-title="<?php echo JText::_('COM_JBLANCE_ACTION'); ?>">
 					<?php
 						if($row->wishlist == 1){ ?>
-							<a href="javascript:void(0);" onclick="javascript:modalConfirm('<?php echo JText::_('Confirm order?', true); ?>', '<?php echo JText::_('Are you sure make this item as an order?', true); ?>', '<?php echo $link_makeorder; ?>');" ><?php echo JText::_('Convert to order'); ?></a> /
-							<a href="javascript:void(0);" onclick="javascript:modalConfirm('<?php echo JText::_('COM_JBLANCE_DELETE', true); ?>', '<?php echo JText::_('COM_JBLANCE_CONFIRM_DELETE_PROJECT', true); ?>', '<?php echo $link_del; ?>');" ><?php echo JText::_('COM_JBLANCE_DELETE'); ?></a>
+							<!-- <a href="javascript:void(0);" onclick="javascript:modalConfirm('<?php echo JText::_('Confirm order?', true); ?>', '<?php echo JText::_('Are you sure make this item as an order?', true); ?>', '<?php echo $link_makeorder; ?>');" ><?php echo JText::_('Convert to order'); ?></a> /
+							<a href="javascript:void(0);" onclick="javascript:modalConfirm('<?php echo JText::_('COM_JBLANCE_DELETE', true); ?>', '<?php echo JText::_('COM_JBLANCE_CONFIRM_DELETE_PROJECT', true); ?>', '<?php echo $link_del; ?>');" ><?php echo JText::_('COM_JBLANCE_DELETE'); ?></a> -->
+							<div class="control-group">
+									<label class="control-label"><?php echo JText::_('Convert to order'); ?></label>
+								<div class="controls">
+									<input type="checkbox" class="radio" name="checkall-toggle" value="" title="<?php echo JText::_('Check me'); ?>"  /> 
+									
+								</div>
+							</div>
+							
+							
+
+</fieldset>
 					<?php } ?>
 
+		
 				</td>
 				
 			</tr>
 		
-			
+			<?php
+			$k = 1 - $k;
+		}
+		?>
 		</tbody>
 		
 	</table>
 	</div>
+	<div class="form-actions">
+		<input type="submit" value="<?php echo JText::_('COM_JBLANCE_SAVE'); ?>" class="btn btn-primary" />
+		<input type="button" onclick="javascript:history.back()" value="<?php echo JText::_('COM_JBLANCE_CANCEL'); ?>" class="btn btn-primary"/>
+	</div>
+	<input type="hidden" name="task" value="project.convertwishlist" />	
 	<input type="hidden" name="option" value="com_jblance" />			
 	<input type="hidden" name="task" value="" />	
 </form>

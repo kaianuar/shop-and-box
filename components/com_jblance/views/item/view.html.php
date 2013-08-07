@@ -43,6 +43,16 @@ class JblanceViewItem extends JViewLegacy {
 		if($layout == 'edititem'){
 			
 		}
+		elseif($layout == 'wishlist'){
+			$return = $model->getShowMyWishlist();
+			print_r($return);
+			$rows = $return[0];
+			$pageNav = $return[1];
+			$fields = $return[2];
+			$this->assignRef('rows', $rows);
+			$this->assignRef('pageNav', $pageNav);
+			$this->assignRef('fields', $fields);
+		}
 		
 		
 		

@@ -35,7 +35,7 @@
 		<thead>
 			<tr>
 				<th><?php echo JText::_('#'); ?></th>
-				<th><?php echo JText::_('COM_JBLANCE_PROJECT_NAME'); ?></th>
+				<th><?php echo JText::_('Order Name'); ?></th>
 				<th><?php echo JText::_('COM_JBLANCE_STATUS'); ?></th>
 				<th><?php echo JText::_('COM_JBLANCE_BIDS'); ?></th>	
 				<th><?php echo JText::_('COM_JBLANCE_ACTION'); ?></th>

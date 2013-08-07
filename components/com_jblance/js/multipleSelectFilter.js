@@ -112,6 +112,7 @@ var multipleSelectFilter = new Class({
 			'class'	: 'filterWrapper',
 			styles:{
 				'width':wrapperWidth+'px'
+				
 			}			
 		})
 		

@@ -143,7 +143,7 @@ if(!JBLANCE_FREE_MODE){
 		<!-- current orders section -->
 		<h3><?php echo JText::_('COM_JBLANCE_CURRENT_ORDERS'); ?></h3>
 		<?php 
-		print_r($this);
+		//print_r($this);
 		if(!empty($this->getCurrentOrders)){
 			foreach($this->getCurrentOrders as $orders){
 		?>

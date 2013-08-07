@@ -40,7 +40,6 @@
 
 <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="userFormProject" id="userFormProject" class="form-validate form-horizontal" onsubmit="return validateForm(this);" enctype="multipart/form-data">
 	<div class="jbl_h3title">Post New Item</div>
-	<?php echo JRoute::_('index.php'); ?>
 	<?php 
 	$lastSubscr = $finance->getLastSubscription($user->id);
 	if($lastSubscr->projects_allowed > 0) :
@@ -51,15 +50,15 @@
 	</div>
 	<?php endif; ?>
 	<fieldset>
-		<legend><?php echo JText::_('COM_JBLANCE_YOUR_PROJECT_DETAILS'); ?></legend>
+		<legend><?php echo JText::_('Item details'); ?></legend>
 		<div class="control-group">
-			<label class="control-label" for="project_title"><?php echo JText::_('COM_JBLANCE_PROJECT_TITLE'); ?> <span class="redfont">*</span>:</label>
+			<label class="control-label" for="project_title"><?php echo JText::_('Item Name'); ?> <span class="redfont">*</span>:</label>
 			<div class="controls">
 				<input type="text" class="input-xlarge required" name="item_name" id="item_name" value="<?php echo $this->row->project_title;?>" />
 			</div>
 		</div>
 		<!-- <div class="control-group">
-			<label class="control-label" for="id_category"><?php echo JText::_('COM_JBLANCE_PROJECT_CATEGORIES'); ?> <span class="redfont">*</span>:</label>
+			<label class="control-label" for="id_category"><?php echo JText::_('Item Categories'); ?> <span class="redfont">*</span>:</label>
 			<div class="controls">
 				<?php 
 				$attribs = 'class="input-xlarge required"';
@@ -68,7 +67,7 @@
 				?>
 			</div>
 
-		</div> -->
+		</div>  -->
 		
 	
 		<!-- <div class="control-group">
@@ -80,14 +79,17 @@
 				echo $select->getSelectBudgetRange('budgetrange', $default, 'COM_JBLANCE_PLEASE_SELECT', $attribs, '');
 				?>
 			</div>
-		</div> -->
+		</div>  -->
+
+
 		<!-- <div class="control-group">
 			<label class="control-label" for="description"><?php echo JText::_('COM_JBLANCE_DESCRIPTION'); ?> <span class="redfont">*</span>:</label>
 			<div class="controls">
 				<?php echo $editor->display('description', $this->row->description, '100%', '400', '50', '10', false); ?>
 			</div>
-		</div> -->
-		<div class="control-group">
+		</div>  -->
+		
+		<!-- <div class="control-group">
 			<label class="control-label"><?php echo JText::_('COM_JBLANCE_ATTACHMENT'); ?> :</label>
 			<div class="controls">
 				<?php
@@ -112,7 +114,7 @@
 				}
 				?>
 			</div>
-		</div>
+		</div> -->
 	</fieldset>
 	
 	<?php 

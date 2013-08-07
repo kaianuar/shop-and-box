@@ -26,6 +26,7 @@ class JblanceControllerUser extends JControllerLegacy {
 		JSession::checkToken() or jexit('Invalid Token');
 	
 		// Initialize variables
+
 		$app  	= JFactory::getApplication();
 		$user	= JFactory::getUser();
 		$db		= JFactory::getDBO();
@@ -33,6 +34,7 @@ class JblanceControllerUser extends JControllerLegacy {
 		$post   = JRequest::get('POST');
 		$jbuser	= JTable::getInstance('jbuser', 'Table');
 		//$jbuser->load($id);
+		print_r($post); exit;
 		
 		$id_category 	= $app->input->get('id_category', '', 'array');
 		if(count($id_category) > 0 && !(count($id_category) == 1 && empty($id_category[0]))){
@@ -217,6 +219,7 @@ class JblanceControllerUser extends JControllerLegacy {
 	}
 	
 	function saveNotify(){
+		//echo "save notify"; exit;
 		// Check for request forgeries
 		JSession::checkToken() or jexit('Invalid Token');
 		

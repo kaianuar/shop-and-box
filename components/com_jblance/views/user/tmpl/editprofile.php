@@ -77,7 +77,7 @@
 		<?php endif; ?>
 		<!-- Skills and hourly rate should be visible only to users who can work/bid -->
 		<?php if($userInfo->allowBidProjects) : ?>
-		<div class="control-group">
+		<!-- <div class="control-group">
 			<label class="control-label" for="rate"><?php echo JText::_('COM_JBLANCE_HOURLY_RATE'); ?> <span class="redfont">*</span>:</label>
 			<div class="controls">
 				<div class="input-prepend input-append">
@@ -86,8 +86,8 @@
 					<span class="add-on"><?php echo $currencycod.' / '.JText::_('COM_JBLANCE_HOUR'); ?></span>
 				</div>
 			</div>
-		</div>
-		<div class="control-group">
+		</div> -->
+		<!-- <div class="control-group">
 			<label class="control-label" for="id_category"><?php echo JText::_('COM_JBLANCE_SKILLS'); ?> <span class="redfont">*</span>:</label>
 			<div class="controls">
 				<?php 
@@ -95,7 +95,42 @@
 				$categtree = $select->getSelectCategoryTree('id_category[]', explode(',', $this->userInfo->id_category), 'COM_JBLANCE_PLEASE_SELECT', $attribs, '', true);
 				echo $categtree; ?>
 			</div>
+		</div> -->
+
+		<div class="control-group">
+			<label class="control-label" for="id_category"><?php echo JText::_('Item Categories'); ?> <span class="redfont">*</span>:</label>
+			<div class="controls">
+				<?php 
+				$attribs = 'class="input-xlarge required"';
+				$default = $this->row->id_category;
+				echo $select->getSelectCategoryTree('id_category[]', $default, 'COM_JBLANCE_PLEASE_SELECT', $attribs, '',true);
+				?>
+			</div>
+
 		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="country"><?php echo JText::_('Availability'); ?> :</label>
+				<div class="controls">
+					<?php 
+					$select = JHtml::_('select.option', "Red", "Red");
+					echo $select;
+					?>
+				</div>
+	</div>
+
+	<div class="control-group">
+			<label class="control-label" for="country"><?php echo JText::_('Transaction Type'); ?> :</label>
+				<div class="controls">
+					<?php 
+					$default = 'Available';
+					$options = array('Available','Not Available');
+					$dropdown = JHTML::_('select.genericlist', $options, 'trans', 'class="inputbox"', 'value', 'text', $default);
+					echo $dropdown;
+					?>
+				</div>
+		</div>
+
 		<?php endif; ?>
 	</fieldset>
 	

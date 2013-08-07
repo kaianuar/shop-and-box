@@ -75,33 +75,34 @@
  		return $return;
  	}
  	
- 	function getshowMyWishlist(){
- 		$app  = JFactory::getApplication();
- 		$db	  = JFactory::getDBO();
- 		$user = JFactory::getUser();
+ 	// function getshowMyWishlist(){
+ 	// 	$app  = JFactory::getApplication();
+ 	// 	$db	  = JFactory::getDBO();
+ 	// 	$user = JFactory::getUser();
  		
- 		$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
- 		$limitstart	= $app->input->get('limitstart', 0, 'int');
- 	    $query = 'SELECT * FROM #__jblance_item p WHERE p.user_id='.$user->id.' AND p.wishlist=1 ORDER BY p.id DESC';
- 		
-
-
- 		$db->setQuery($query);
- 		$db->execute();
- 		$total = $db->getNumRows();
+ 	// 	$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
+ 	// 	$limitstart	= $app->input->get('limitstart', 0, 'int');
+ 	//     $query = 'SELECT * FROM #__jblance_item p WHERE p.user_id='.$user->id.' AND p.wishlist=1 ORDER BY p.id DESC';
  		
 
 
- 		jimport('joomla.html.pagination');
- 		$pageNav = new JPagination($total, $limitstart, $limit);
+ 	// 	$db->setQuery($query);
+ 	// 	$db->execute();
+ 	// 	$total = $db->getNumRows();
  		
- 		$db->setQuery($query, $pageNav->limitstart, $pageNav->limit);
- 		$rows = $db->loadObjectList();
 
- 		$return[0] = $rows;
- 		$return[1] = $pageNav;
- 		return $return;
- 	}
+
+ 	// 	jimport('joomla.html.pagination');
+ 	// 	$pageNav = new JPagination($total, $limitstart, $limit);
+ 		
+ 	// 	$db->setQuery($query, $pageNav->limitstart, $pageNav->limit);
+ 	// 	$rows = $db->loadObjectList();
+
+ 		
+ 	// 	$return[0] = $rows;
+ 	// 	$return[1] = $pageNav;
+ 	// 	return $return;
+ 	// }
 
  	function getShowMyProject(){
  		$app  = JFactory::getApplication();
@@ -111,7 +112,8 @@
  		$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
  		$limitstart	= $app->input->get('limitstart', 0, 'int');
  		
- 		$query = 'SELECT * FROM #__jblance_project p WHERE p.publisher_userid='.$user->id.' AND p.wishlist <> 1 ORDER BY p.id DESC';
+ 		$query = 'SELECT * FROM #__jblance_project p WHERE p.publisher_userid='.$user->id.' ';
+ 		//print_r($query); exit;
  		$db->setQuery($query);
  		$db->execute();
  		$total = $db->getNumRows();
@@ -215,6 +217,20 @@
  		$db->setQuery($query);
  		$projfiles = $db->loadObjectList();
  		
+
+ 	
+ 		 
+ 		$items_id = explode(',',$row->items);
+
+ 		foreach ($items_id as $itemid) {
+ 			$query2 = "SELECT * FROM #__jblance_item  WHERE id=".$itemid;
+ 			$db->setQuery($query2);
+ 			$items[] = $db->loadObject();
+ 			
+ 		}
+ 		
+ 	
+
  		//if the project is sealed, get the particular bid row for the bidder.
  		$projHelper = JblanceHelper::get('helper.project');		// create an instance of the class ProjectHelper
  		$hasBid = $projHelper->hasBid($row->id, $user->id);
@@ -254,6 +270,8 @@
  		$return[2] = $bids;
  		$return[3] = $fields;
  		$return[4] = $forums;
+ 		$return[5] = $items;
+
  		return $return;
  	}
  	

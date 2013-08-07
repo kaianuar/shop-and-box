@@ -80,12 +80,14 @@ class JblanceViewProject extends JViewLegacy {
 			$bids 		= $return[2];
 			$fields 	= $return[3];
 			$forums 	= $return[4];
+			$items		= $return[5];
 			
 			$this->assignRef('row', $row);
 			$this->assignRef('projfiles', $projfiles);
 			$this->assignRef('bids', $bids);
 			$this->assignRef('fields', $fields);
 			$this->assignRef('forums', $forums);
+			$this->assignRef('items', $items);
 			
 			//set page title
 			$doc = JFactory::getDocument();

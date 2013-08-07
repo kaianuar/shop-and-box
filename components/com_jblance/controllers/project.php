@@ -27,37 +27,37 @@ class JblanceControllerProject extends JControllerLegacy {
 		// Initialize variables
 		$app  	= JFactory::getApplication();
 		$user 	= JFactory::getUser();
-		$row	= JTable::getInstance('item', 'Table');
-		$post   = JRequest::get('POST');
+		$row	= JTable::getInstance('project', 'Table');
+		// $post   = JRequest::get('POST');
 
 		//print_r($post); exit;
 
-		$id		= $app->input->get('id', 0, 'int');
-		$db 	= JFactory::getDBO();
-		$jbmail = JblanceHelper::get('helper.email');		// create an instance of the class EmailHelper
-		$isNew	= false;
-		$totalAmount = $app->input->get('totalamount', 0, 'float');
-		$budgetRange = $app->input->get('budgetrange', '', 'string');
+		// $id		= $app->input->get('id', 0, 'int');
+		// $db 	= JFactory::getDBO();
+		// $jbmail = JblanceHelper::get('helper.email');		// create an instance of the class EmailHelper
+		// $isNew	= false;
+		// $totalAmount = $app->input->get('totalamount', 0, 'float');
+		// $budgetRange = $app->input->get('budgetrange', '', 'string');
 		
-		$config 		= JblanceHelper::getConfig();
-		$reviewProjects = $config->reviewProjects;
+		// $config 		= JblanceHelper::getConfig();
+		// $reviewProjects = $config->reviewProjects;
 		
 		//load the project value if the project is 'edit'
-		if($id > 0)
-			$row->load($id);
-		else
-			$isNew = true;	// this is a new project
+		// if($id > 0)
+		// 	$row->load($id);
+		// else
+		// 	$isNew = true;	// this is a new project
 		
-		$post['publisher_userid'] = $user->id;
-		$post['description']  = JRequest::getVar('description', '', 'POST', 'string', JREQUEST_ALLOWRAW);
+		// $post['publisher_userid'] = $user->id;
+		// $post['description']  = JRequest::getVar('description', '', 'POST', 'string', JREQUEST_ALLOWRAW);
 		
-		$id_category 	= $app->input->get('id_category', '', 'array');
-		if(count($id_category) > 0 && !(count($id_category) == 1 && empty($id_category[0]))){
-			$proj_categ = implode(',', $id_category);
-		}
-		elseif($id_category[0] == 0){
-			$proj_categ = 0;
-		}
+		// $id_category 	= $app->input->get('id_category', '', 'array');
+		// if(count($id_category) > 0 && !(count($id_category) == 1 && empty($id_category[0]))){
+		// 	$proj_categ = implode(',', $id_category);
+		// }
+		// elseif($id_category[0] == 0){
+		// 	$proj_categ = 0;
+		// }
 		// $post['id_category'] = $proj_categ;
 		
 		// $budgetRange = explode('-', $budgetRange);
@@ -353,20 +353,23 @@ class JblanceControllerProject extends JControllerLegacy {
 		$this->setRedirect($return, $msg);
 	}
 	
-	function convertWishlist(){
-		JSession::checkToken('request') or jexit('Invalid Token');
+	function convertwishList(){
+		echo "Convert process..."; exit;
+
+
+		// JSession::checkToken('request') or jexit('Invalid Token');
 	
-		$app  	= JFactory::getApplication();
-		$db 	= JFactory::getDBO();
-		$user 	= JFactory::getUser();
-		$id 	= $app->input->get('id', 0, 'int');
-		$query = "UPDATE #__jblance_project SET wishlist=0 WHERE id =".$db->quote($id);
-		//print_r($query);
-		$db->setQuery($query);
-		$db->execute();
-		$msg = JText::_("Wishlist successfully converted as an order");
-		$return	= JRoute::_('index.php?option=com_jblance&view=project&layout=showmyproject', false);
-		$this->setRedirect($return, $msg);
+		// $app  	= JFactory::getApplication();
+		// $db 	= JFactory::getDBO();
+		// $user 	= JFactory::getUser();
+		// $id 	= $app->input->get('id', 0, 'int');
+		// $query = "UPDATE #__jblance_project SET wishlist=0 WHERE id =".$db->quote($id);
+		// //print_r($query);
+		// $db->setQuery($query);
+		// $db->execute();
+		// $msg = JText::_("Wishlist successfully converted as an order");
+		// $return	= JRoute::_('index.php?option=com_jblance&view=project&layout=showmyproject', false);
+		// $this->setRedirect($return, $msg);
 	}
 
 
@@ -652,4 +655,96 @@ class JblanceControllerProject extends JControllerLegacy {
 		}
 		exit;
 	}
+
+	function submitAcceptance(){
+		$app  		= JFactory::getApplication();
+		$now 		= JFactory::getDate();
+		$row 		= JTable::getInstance('project', 'Table');
+		$isAccept 	= $app->input->get('action', '', 'string');
+		$userid 	= $app->input->get('user_id', 0, 'int');
+		$projectid 	= $app->input->get('project_id', 0, 'int');
+		$post 		= array();
+		//$jbmail 	= JblanceHelper::get('helper.email');		// create an instance of the class EmailHelper
+		$projHelper	= JblanceHelper::get('helper.project');		// create an instance of the class ProjectHelper
+		
+		//show whether name/username
+		$config = JblanceHelper::getConfig();
+		$showUsername = $config->showUsername;
+		$nameOrUsername = ($showUsername) ? 'username' : 'name';
+		
+		//get user details
+		$user = JFactory::getUser($userid);
+		
+		//get project details 
+		$jbproject = $projHelper->getProjectDetails($projectid);
+		
+
+
+
+		$post['id'] = $projectid;
+		
+
+		if($isAccept == "accept"){
+			$post['isAccepted'] = 1;
+				$result = $row->save($post);
+				if($result){
+					$message = 'You have accepted the order';
+					echo "<div>$message</div>";
+				}
+				else 
+					JError::raiseError(500, $row->getError());
+		}else{
+
+			// Call up the assignment engine
+		}
+		exit;
+	}	
+
+	function editItem(){
+		$app  		= JFactory::getApplication();
+		$now 		= JFactory::getDate();
+		$row 		= JTable::getInstance('item', 'Table');
+		$itemName 	= $app->input->get('itemName', '', 'string');
+		$itemURL 	= $app->input->get('itemURL', '', 'string');
+		$category 	= $app->input->get('category', '', 'string');
+		$cost 		= $app->input->get('cost', '', 'string');
+		$isConfirmed= $app->input->get('isConfirmed', 0, 'int');
+		$isRejected = $app->input->get('isRejected', 0, 'int');
+		$itemID		= $app->input->get('itemID', 0, 'int');
+		$post 		= array();
+		//$jbmail 	= JblanceHelper::get('helper.email');		// create an instance of the class EmailHelper
+		$projHelper	= JblanceHelper::get('helper.project');		// create an instance of the class ProjectHelper
+		
+		//show whether name/username
+		$config = JblanceHelper::getConfig();
+
+		
+		//get user details
+		//$user = JFactory::getUser($userid);
+		
+		//get project details 
+		//$jbproject = $projHelper->getProjectDetails($projectid);
+		
+		$post['id'] 		= $itemID;
+		$post['item_name']  = $itemName;
+		$post['item_url'] 	= $itemURL;
+		$post['category'] 	= $category;
+		$post['cost'] 		= $cost;
+		$post['isConfirmed']= $isConfirmed;
+		$post['isRejected'] = $isRejected;
+		
+		if($itemID){
+				$result = $row->save($post);
+				if($result){
+					$message = 'You have successfully confirmed the order';
+					echo "<div>$message</div>";
+				}
+				else 
+					JError::raiseError(500, $row->getError());
+		}else{
+
+			// Call up the assignment engine
+		}
+		exit;
+	}		
 }
